@@ -36,10 +36,14 @@ Route::middleware('auth')->group(function () {
     
 });
 
+Route::get('/', [FacultadesController::class, 'publicindex'])->name('facultades.public.index');
 Route::get('/materiales', [Material_materiaController::class, 'publicIndex'])->name('material.public.index');
 Route::get('/homepage', function () {
     return view('admin.home');
 })->name('homepage');
+Route::get('/IMTC', function () {
+    return view('carreras.IMTC');
+})->name('IMTC');
 
 
 Route::get('/video/{filename}', [VideoController::class, 'show'])->name('video.show');

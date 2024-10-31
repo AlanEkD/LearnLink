@@ -10,11 +10,17 @@ class FacultadesController extends Controller
     /**
      * Display a listing of the resource.
      */
+    public function publicIndex()
+{
+    $i = 1;
+    $facultades = Facultades::all();
+    return view('welcome', compact('facultades', 'i'));
+}
     public function index()
     {
         $i = 1;
-        $facultades = Facultades::all();
-        return view('crud.facultades.facultades',compact('facultades','i'));
+        $facultades = Facultades::all(); // Obtén todas las facultades desde la base de datos
+        return view('crud.facultades.facultades', compact('facultades', 'i')); // Pasa las facultades a la vista
     }
 
     /**
@@ -22,7 +28,7 @@ class FacultadesController extends Controller
      */
     public function create()
     {
-        //
+        // Mostrar el formulario de creación (si es necesario)
     }
 
     /**
@@ -30,17 +36,28 @@ class FacultadesController extends Controller
      */
     public function store(Request $request)
     {
-        // para hacer validaciones
+        // Validar el nombre y la imagen
         $request->validate([
             'nombre' => 'required|string|max:255',
+            'foto' => 'nullable|image|mimes:png|max:2048', // Validación para la imagen (formato PNG y tamaño máximo 2MB)
         ]);
 
-        $facultad = new Facultades(); // Llamando a la funcion para crear un nuevo objeto
+        // Crear una nueva instancia de Facultades
+        $facultad = new Facultades();
         $facultad->nombre = $request->nombre;
-        $facultad->save();// guardar el elemento en la base de datos
 
+        // Si se cargó una foto, guárdala
+        if ($request->hasFile('foto')) {
+            $fileName = time() . '.' . $request->foto->extension(); // Crear un nombre único para la imagen
+            $request->foto->move(public_path('images/facultades'), $fileName); // Guardar la imagen en el directorio público
+            $facultad->foto = $fileName; // Guardar el nombre del archivo en la base de datos
+        }
+
+        // Guardar el nuevo registro
+        $facultad->save();
+
+        // Redireccionar de vuelta con un mensaje de éxito
         return redirect()->back()->with('success', 'Facultad creada exitosamente.');
-
     }
 
     /**
@@ -48,7 +65,7 @@ class FacultadesController extends Controller
      */
     public function show(string $id)
     {
-        //
+        // Mostrar una facultad específica
     }
 
     /**
@@ -56,7 +73,7 @@ class FacultadesController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        // Mostrar el formulario de edición
     }
 
     /**
@@ -64,24 +81,32 @@ class FacultadesController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        // Validar los datos de entrada
+        // Validar el nombre y la imagen
         $request->validate([
             'nombre' => 'required|string|max:255',
+            'foto' => 'nullable|image|mimes:png|max:2048', // Validación para la imagen (formato PNG y tamaño máximo 2MB)
         ]);
-    
+
         // Buscar la facultad por ID
         $facultad = Facultades::find($id);
-    
-        // Comprobar si la facultad existe
+
         if (!$facultad) {
             return redirect()->route('facultades.index')->with('error', 'Facultad no encontrada');
         }
-    
-        // Actualizar los datos de la facultad
+
+        // Actualizar los datos
         $facultad->nombre = $request->input('nombre');
+
+        // Si se cargó una nueva foto, reemplazarla
+        if ($request->hasFile('foto')) {
+            $fileName = time() . '.' . $request->foto->extension();
+            $request->foto->move(public_path('images/facultades'), $fileName);
+            $facultad->foto = $fileName;
+        }
+
+        // Guardar los cambios
         $facultad->save();
-    
-        // Redireccionar a la lista de facultades con un mensaje de éxito
+
         return redirect()->route('facultades.index')->with('success', 'Facultad actualizada correctamente');
     }
 
@@ -90,19 +115,14 @@ class FacultadesController extends Controller
      */
     public function destroy(string $id)
     {
-        // Encuentra la facultad por su ID
+        // Buscar la facultad por su ID y eliminarla
         $facultad = Facultades::find($id);
         
-        // Verifica si se encontró la facultad
         if ($facultad) {
-            // Elimina la facultad
             $facultad->delete();
-
-            // Redirecciona con un mensaje de éxito
             return redirect()->route('facultades.index')->with('success', 'Facultad eliminada correctamente.');
         }
 
-        // Si no se encuentra, redirecciona con un mensaje de error
         return redirect()->route('facultades.index')->with('error', 'Facultad no encontrada.');
     }
 }

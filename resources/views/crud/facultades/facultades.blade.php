@@ -9,25 +9,32 @@
 <body class="bg-gray-100">
     <main class="min-h-screen flex flex-col items-center p-5">
         <h1 class="text-4xl font-bold text-gray-800 mt-10">Facultades</h1>
-
-     
         <!-- Modal para crear facultades -->
-        <div class="modal-create hidden fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-10">
-            <div class="bg-white rounded-lg shadow-lg p-8 w-[350px]">
-                <form action="{{ route('facultades.store') }}" method="POST" class="flex flex-col gap-5">
-                    @csrf
-                    <button type="button" class="close absolute top-3 right-3 text-gray-500 hover:text-red-600">X</button>
-                    <h2 class="text-2xl font-semibold mb-4 text-center">Crear Facultad</h2>
-                    <label for="nombre" class="text-gray-700">Nombre</label>
-                    <input
-                        class="bg-gray-100 border border-gray-300 px-3 py-2 w-full rounded-md focus:outline-none focus:border-fuchsia-500"
-                        type="text" id="nombre" name="nombre" placeholder="Ingresa el nombre de la facultad" required>
-                    <button type="submit" class="text-lg bg-fuchsia-500 hover:bg-fuchsia-600 rounded-md px-6 py-2 text-white shadow-md mt-4 transition duration-300">
-                        Crear
-                    </button>
-                </form>
+            <div class="modal-create hidden fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-10">
+                <div class="bg-white rounded-lg shadow-lg p-8 w-[350px]">
+                    <form action="{{ route('facultades.store') }}" method="POST" enctype="multipart/form-data" class="flex flex-col gap-5">
+                        @csrf
+                        <button type="button" class="close absolute top-3 right-3 text-gray-500 hover:text-red-600">X</button>
+                        <h2 class="text-2xl font-semibold mb-4 text-center">Crear Facultad</h2>
+                        
+                        <label for="nombre" class="text-gray-700">Nombre</label>
+                        <input
+                            class="bg-gray-100 border border-gray-300 px-3 py-2 w-full rounded-md focus:outline-none focus:border-fuchsia-500"
+                            type="text" id="nombre" name="nombre" placeholder="Ingresa el nombre de la facultad" required>
+                        
+                        <!-- Campo para subir la foto -->
+                        <label for="foto" class="text-gray-700">Foto (PNG)</label>
+                        <input
+                            class="bg-gray-100 border border-gray-300 px-3 py-2 w-full rounded-md focus:outline-none focus:border-fuchsia-500"
+                            type="file" id="foto" name="foto" accept="image/png">
+                        
+                        <button type="submit" class="text-lg bg-fuchsia-500 hover:bg-fuchsia-600 rounded-md px-6 py-2 text-white shadow-md mt-4 transition duration-300">
+                            Crear
+                        </button>
+                    </form>
+                </div>
             </div>
-        </div>
+
 
         <div class="h-fit w-full flex flex-col items-center mt-10">
             <button class="open text-lg bg-fuchsia-500 rounded-md px-6 py-2 text-white shadow-md mb-4 transition duration-300">
@@ -45,6 +52,7 @@
                         <tr>
                             <th class="py-3 px-4 text-left rounded-l-md">#</th>
                             <th class="py-3 px-4 text-left">Nombre</th>
+                            <th class="py-3 px-4 text-left">Logo</th>
                             <th class="py-3 px-4 text-left rounded-r-md">Acciones</th>
                         </tr>
                     </thead>
@@ -54,6 +62,14 @@
                                 <td class="py-3 px-4">{{ $i + 1 }}</td>
                                 <td class="py-3 px-4">{{ $facultad->nombre }}</td>
                                 <td class="py-3 px-4">
+                                    @if($facultad->foto)
+                                        <img src="{{ asset('images/facultades/' . $facultad->foto) }}" alt="Logo de {{ $facultad->nombre }}" class="w-16 h-16 object-cover rounded-md">
+                                    @else
+                                        <span>No hay logo</span>
+                                    @endif
+                                </td>
+                                <td class="py-3 px-4">
+                                    
                                     <div class="flex space-x-4">
                                         <button class="edit text-blue-500 hover:text-blue-700 transition duration-300" data-id="{{ $facultad->id }}" data-nombre="{{ $facultad->nombre }}">
                                             Editar
@@ -65,24 +81,34 @@
                                 </td>
                             </tr>
 
+                            
                             <!-- Modal para editar facultades -->
                             <div class="modal-edit-{{ $facultad->id }} hidden fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-10">
                                 <div class="bg-white rounded-lg shadow-lg p-8 w-[350px]">
-                                    <form action="{{ route('facultades.update', $facultad->id) }}" method="POST" class="flex flex-col gap-5">
-                                        @csrf
-                                        @method('PUT')
+                                     <form action="{{ route('facultades.update', $facultad->id) }}" method="POST" enctype="multipart/form-data" class="flex flex-col gap-5">
+                                           @csrf
+                                             @method('PUT')
                                         <button type="button" class="close-modal-edit absolute top-3 right-3 text-gray-500 hover:text-red-600">X</button>
-                                        <h2 class="text-2xl font-semibold mb-4 text-center">Editar Facultad</h2>
-                                        <label for="nombre" class="text-gray-700">Nombre</label>
-                                        <input
-                                            class="bg-gray-100 border border-gray-300 px-3 py-2 w-full rounded-md focus:outline-none focus:border-fuchsia-500"
-                                            type="text" id="nombre" name="nombre" value="{{ $facultad->nombre }}" required>
-                                        <button type="submit" class="text-lg bg-fuchsia-500 hover:bg-fuchsia-600 rounded-md px-6 py-2 text-white shadow-md mt-4 transition duration-300">
+                                             <h2 class="text-2xl font-semibold mb-4 text-center">Editar Facultad</h2>
+                
+                                                 <label for="nombre" class="text-gray-700">Nombre</label>
+                                                         <input
+                                                               class="bg-gray-100 border border-gray-300 px-3 py-2 w-full rounded-md focus:outline-none focus:border-fuchsia-500"
+                                                                  type="text" id="nombre" name="nombre" value="{{ $facultad->nombre }}" required>
+                
+                <!-- Campo para subir la foto -->
+                                                <label for="foto" class="text-gray-700">Foto (PNG)</label>
+                                                    <input
+                                                        class="bg-gray-100 border border-gray-300 px-3 py-2 w-full rounded-md focus:outline-none focus:border-fuchsia-500"
+                                                            type="file" id="foto" name="foto" accept="image/png">
+                                        
+                                                <button type="submit" class="text-lg bg-fuchsia-500 hover:bg-fuchsia-600 rounded-md px-6 py-2 text-white shadow-md mt-4 transition duration-300">
                                             Actualizar
-                                        </button>
-                                    </form>
-                                </div>
+                                            </button>
+                                                </form>
+                                        </div>
                             </div>
+
 
                             <!-- Modal para eliminar facultades -->
                             <div class="modal-delete-{{ $facultad->id }} hidden fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-10">

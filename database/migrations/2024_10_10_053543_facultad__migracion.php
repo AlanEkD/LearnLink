@@ -11,12 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('facultades',function(Blueprint $table){
-            $table->id();
-            $table->string('nombre');
-            $table->timestamps(); // Esto agrega las columnas created_at y updated_at
-
-        });
+     Schema::create('facultades', function (Blueprint $table) {
+        $table->id();
+        $table->string('nombre');
+        $table->string('foto')->nullable(); // Añadir la columna foto
+        $table->timestamps(); // Esto agrega las columnas created_at y updated_at
+     });
     }
 
     /**
