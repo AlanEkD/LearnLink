@@ -239,7 +239,7 @@
     </div>
 
     <!-- Botón de Regreso al Inicio -->
-    <button id="btn-top" onclick="scrollToTop()" class="fixed bottom-5 right-5 bg-blue-600 text-white py-2 px-4 rounded-full shadow-lg hidden hover:bg-blue-700 transition">
+    <button id="btn-top" onclick="scrollToTop()" class="fixed bottom-5 right-5 bg-gradient-to-r from-indigo-500 to-gray-900 text-white py-2 px-4 rounded-full shadow-lg hidden hover:bg-blue-700 transition">
         ⬆ Regresar al inicio
     </button>
     

@@ -38,6 +38,12 @@
                         {{ __('Back to Home') }}
                     </a>
                 </div>
+
+                <div class="p-6">
+                    <a href="/homepage" class="inline-block bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2 px-4 rounded">
+                        {{ __('Admin Dashboard') }}
+                    </a>
+                </div>
             </div>
         </div>
     </div>

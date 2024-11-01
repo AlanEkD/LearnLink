@@ -116,13 +116,34 @@
     <div id="sidebar" class="w-64 min-h-screen bg-gray-900 text-white p-6 lg:sticky top-0">
       <!-- Logo and Title in the same row -->
       <div class="flex items-center space-x-4 mb-6">
-        <img src="{{ asset('img/UANL.png') }}" alt="Logo" class="h-12 w-12 rounded-full bg-gradient-to-br from-gray-400 to-gray-100">
+        <img src="{{ asset('img/FIME.png') }}" alt="Logo" class="h-15 w-10 rounded-full bg-gradient-to-br from-gray-100 to-gray-100">
         <h2 class="text-xl font-semibold">Menú</h2>
-      </div class="items-center text-justify">
-      <p >
-        LearnLink es una plataforma educativa diseñada para la Universidad Autónoma de Nuevo León, con el objetivo de facilitar el acceso a recursos académicos y apoyar a estudiantes y docentes en la gestión y organización de materiales de estudio. Con una interfaz intuitiva y herramientas colaborativas, LearnLink ofrece un espacio centralizado donde se pueden encontrar documentos, guías y apuntes clasificados por facultad, carrera y semestre, promoviendo un aprendizaje eficiente y accesible para todos los usuarios de la UANL.
-        
-      </p>
+      </div>
+
+      <ul class="space-y-4">
+        <li>
+          <button onclick="window.location.href='/IMTC#'" class="w-full text-left hover:bg-gray-700 p-2 rounded-lg">
+              Ingeniería Mecatrónica
+          </button>
+      </li>
+      <li>
+        <button onclick="window.location.href='/IMTC#'" class="w-full text-left hover:bg-gray-700 p-2 rounded-lg">
+          Ingeniería Biomédica
+        </button>
+    </li>
+    <li>
+      <button onclick="window.location.href='/IMTC#'" class="w-full text-left hover:bg-gray-700 p-2 rounded-lg">
+        Ingeniería Aeronáutica
+      </button>
+  </li>
+  <li>
+    <button onclick="window.location.href='/IMTC#'" class="w-full text-left hover:bg-gray-700 p-2 rounded-lg">
+      Ingeniería Mecánica y Eléctrica
+    </button>
+</li>
+
+        <li><button onclick="selectEngineering('Ingeniería en Software')" class="w-full text-left hover:bg-gray-700 p-2 rounded-lg">Ingeniería en Software</button></li>
+      </ul>
     </div>
  
 
