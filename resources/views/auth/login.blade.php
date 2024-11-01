@@ -1,5 +1,5 @@
 <x-guest-layout>
-    <div class="w-100 min-h-screen flex items-center justify-center bg-gradient-to-r from-blue-500 to-indigo-600">
+    <div class="w-100 min-h-screen flex items-center justify-center bg-gradient-to-r ">
         <div class="w-full max-w-md bg-white rounded-lg shadow-lg p-8">
             <!-- Logo -->
             <div class="flex justify-center mb-6">

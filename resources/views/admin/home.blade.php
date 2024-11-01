@@ -14,7 +14,8 @@
     <header class="bg-gradient-to-br from-indigo-500 to-purple-600 shadow-lg">
         <div class="container mx-auto py-6 px-4 flex justify-between items-center">
             <!-- Logo -->
-            <a href="/">
+            <a href="/" class="z-20">
+             
                 <img
                     class="h-20 w-20 transform hover:scale-110 transition duration-500 ease-in-out"
                     src="{{ asset('img/LOGO.png') }}"
@@ -28,7 +29,7 @@
             </h1>
         
             <!-- Profile Button -->
-            <a href="{{ route('dashboard') }}" class="bg-gradient-to-r from-purple-600 to-indigo-500 hover:from-indigo-600 hover:to-purple-600 text-white px-6 py-3 rounded-full shadow-2xl transition transform hover:scale-105 hover:shadow-lg duration-300 ease-in-out">
+            <a href="{{ route('profile.edit') }}" class="bg-gradient-to-r z-20 from-purple-600 to-indigo-500 hover:from-indigo-600 hover:to-purple-600 text-white px-6 py-3 rounded-full shadow-2xl transition transform hover:scale-105 hover:shadow-lg duration-300 ease-in-out">
                 Mi perfil
             </a>
         </div>

@@ -33,4 +33,9 @@ class Materias extends Model
     {
         return $this->belongsTo(Tipo_materia::class, 'tipo_materia_id');
     }
+
+    public function semestres()
+    {
+        return $this->belongsToMany(Semestres::class, 'materia_semestre');
+    }
 }

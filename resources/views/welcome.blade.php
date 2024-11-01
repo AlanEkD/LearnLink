@@ -33,41 +33,73 @@
   <!-- Dropdown para Facultades -->
   <div class="relative">
     <a href="#" onclick="toggleDropdown(event, 'facultadesDropdown')" class="hover:underline text-xl font-bold">Facultades</a>
-
+  
     <!-- Dropdown que contiene la tabla de facultades -->
-    <div id="facultadesDropdown" class="hidden absolute left-0 mt-2 bg-white shadow-lg rounded-lg py-4 w-96 z-10 border border-gray-300">
-        <table class="min-w-full bg-white shadow-lg rounded-lg overflow-hidden">
-            <thead class="bg-gray-200 text-gray-600">
-                <tr>
-                    <th class="py-3 px-4 text-left">#</th>
-                    <th class="py-3 px-4 text-left">Nombre</th>
-                    <th class="py-3 px-4 text-left">Logo</th>
-                </tr>
-            </thead>
-            <tbody class="text-gray-700">
-                @if($facultades->isNotEmpty())
-                    @foreach($facultades as $i => $facultad)
-                        <tr class="border-b hover:bg-gray-100">
-                            <td class="py-3 px-4">{{ $i + 1 }}</td>
-                            <td class="py-3 px-4">{{ $facultad->nombre }}</td>
-                            <td class="py-3 px-4">
-                                @if($facultad->foto)
-                                    <img src="{{ asset('images/facultades/' . $facultad->foto) }}" alt="Logo de {{ $facultad->nombre }}" class="w-16 h-16 object-cover rounded-md">
-                                @else
-                                    <span>No hay logo</span>
-                                @endif
-                            </td>
-                        </tr>
-                    @endforeach
-                @else
-                    <tr>
-                        <td colspan="3" class="py-3 px-4 text-center">No hay facultades disponibles.</td>
-                    </tr>
-                @endif
-            </tbody>
-        </table>
+    <div id="facultadesDropdown" class="hidden absolute left-0 mt-2 bg-white shadow-lg rounded-lg py-4 min-w-[500px] w-fit z-10 border border-gray-300">
+      <div class="p-5">
+        @foreach($facultades as $facultad)
+          <button type="button" class="facultad-button flex items-center gap-4 mt-2 mb-2" data-id="{{ $facultad->id }}">
+            <!-- Contenedor de la Imagen -->
+            <div class="flex-shrink-0">
+              @if($facultad->foto)
+                <img src="{{ asset('images/facultades/' . $facultad->foto) }}" alt="Logo de {{ $facultad->nombre }}" class="w-16 h-16 object-cover rounded-md">
+              @else
+                <span>No hay logo</span>
+              @endif
+            </div>
+            <!-- Contenedor de Texto -->
+            <h1 class="max-w-[400px] truncate overflow-hidden whitespace-nowrap">
+              {{ $facultad->nombre }}
+            </h1>
+          </button>
+        @endforeach
+      </div>
+  
+  
+      <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     </div>
   </div>
+
+<script>
+  function toggleDropdown(event, dropdownId) {
+    const dropdown = document.getElementById(dropdownId);
+    dropdown.classList.toggle('hidden');
+  }
+
+  $(document).ready(function() {
+    $('.facultad-button').on('click', function() {
+      const facultadId = $(this).data('id');
+
+      $.ajax({
+        url: '{{ route("get.carreras") }}',  // Ruta a tu controlador
+        method: 'POST',
+        data: {
+          id: facultadId,
+          _token: '{{ csrf_token() }}'
+        },
+        success: function(response) {
+          let carrerasContent = '<h2 class="text-lg font-semibold">Carreras</h2>';
+          
+          if (response.length > 0) {
+            carrerasContent += '<ul class="list-disc pl-5">';
+            response.forEach(function(carrera) {
+              carrerasContent += '<li>' + carrera.nombre + '</li>';
+            });
+            carrerasContent += '</ul>';
+          } else {
+            carrerasContent += '<p>No hay carreras disponibles para esta facultad.</p>';
+          }
+
+          // Actualiza el contenedor de carreras
+          $('#carreras-container').html(carrerasContent);
+        },
+        error: function() {
+          alert('Hubo un problema al obtener las carreras.');
+        }
+      });
+    });
+  });
+</script>
 
   <!-- Dropdown for Cursos -->
   <div class="relative">
@@ -114,15 +146,17 @@
   <div class="flex">
     <!-- Sidebar -->
     <div id="sidebar" class="w-64 min-h-screen bg-gray-900 text-white p-6 lg:sticky top-0">
-      <!-- Logo and Title in the same row -->
-      <div class="flex items-center space-x-4 mb-6">
-        <img src="{{ asset('img/UANL.png') }}" alt="Logo" class="h-12 w-12 rounded-full bg-gradient-to-br from-gray-400 to-gray-100">
-        <h2 class="text-xl font-semibold">Menú</h2>
-      </div class="items-center text-justify">
-      <p >
-        LearnLink es una plataforma educativa diseñada para la Universidad Autónoma de Nuevo León, con el objetivo de facilitar el acceso a recursos académicos y apoyar a estudiantes y docentes en la gestión y organización de materiales de estudio. Con una interfaz intuitiva y herramientas colaborativas, LearnLink ofrece un espacio centralizado donde se pueden encontrar documentos, guías y apuntes clasificados por facultad, carrera y semestre, promoviendo un aprendizaje eficiente y accesible para todos los usuarios de la UANL.
-        
-      </p>
+      <!-- Contenedor del contenido del sidebar -->
+      <div id="sidebar-content">
+        <!-- Logo and Title in the same row -->
+        <div class="flex items-center space-x-4 mb-6">
+          <img src="{{ asset('img/UANL.png') }}" alt="Logo" class="h-12 w-12 rounded-full bg-gradient-to-br from-gray-400 to-gray-100">
+          <h2 class="text-xl font-semibold">Menú</h2>
+        </div>
+        <p>
+          LearnLink es una plataforma educativa diseñada para la Universidad Autónoma de Nuevo León, con el objetivo de facilitar el acceso a recursos académicos y apoyar a estudiantes y docentes en la gestión y organización de materiales de estudio. Con una interfaz intuitiva y herramientas colaborativas, LearnLink ofrece un espacio centralizado donde se pueden encontrar documentos, guías y apuntes clasificados por facultad, carrera y semestre, promoviendo un aprendizaje eficiente y accesible para todos los usuarios de la UANL.
+        </p>
+      </div>
     </div>
  
 
@@ -241,65 +275,50 @@
   <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 
   <!-- JavaScript for Dropdown functionality -->
-  <script>
-    function toggleSidebar() {
-      var sidebar = document.getElementById("sidebar");
-      sidebar.classList.toggle("-translate-x-full");
-    }
+<!-- Script para manejar la solicitud AJAX y actualizar el sidebar -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+  $(document).ready(function() {
+    $('.facultad-button').on('click', function() {
+      const facultadId = $(this).data('id');
 
-    function selectEngineering(engineering) {
-      // Ocultar el buscador inicial
-      document.getElementById('initialSearch').style.display = 'none';
-      // Mostrar el buscador en la barra superior
-      document.getElementById('searchBox').classList.remove('hidden');
-      
-      // Cambiar el contenido principal para reflejar la ingeniería seleccionada
-      var mainContent = document.getElementById('mainContent');
-      mainContent.innerHTML = `
-        <h1 class="text-4xl font-bold text-indigo-700 text-center">${engineering}</h1>
-        <p class="mt-4 text-lg text-indigo-600 text-center">
-          Aquí encontrarás información sobre ${engineering}.
-        </p>
-        <div class="mt-8 w-full flex justify-center">
-          <button class="bg-indigo-500 hover:bg-indigo-600 text-white px-4 py-2 rounded-full shadow-lg">
-            Ver materias
-          </button>
-        </div>
-      `;
-    }
+      $.ajax({
+        url: '{{ route("get.carreras") }}',
+        method: 'POST',
+        data: {
+          id: facultadId,
+          _token: '{{ csrf_token() }}'
+        },
+        success: function(response) {
+          // Asegúrate de que response.facultad y response.carreras existen
+          let sidebarContent = 
+            '<div class="flex items-center space-x-4 mb-6">' +
+              `<img src="{{ asset("images/facultades/") }}/${response.facultad.foto}" alt="Logo de ${response.facultad.nombre}" class="h-12 w-12 rounded-full bg-gradient-to-br from-gray-400 to-gray-100">` +
+              '<h2 class="text-xl font-semibold">Carreras</h2>' +
+            '</div>';
+          
+          if (response.carreras.length > 0) {
+            sidebarContent += '<ul class="list-disc pl-5">';
+            response.carreras.forEach(function(carrera) {
+              sidebarContent += '<li>' + carrera.nombre + '</li>';
+            });
+            sidebarContent += '</ul>';
+          } else {
+            sidebarContent += '<p>No hay carreras disponibles para esta facultad.</p>';
+          }
 
-    // Función para alternar el dropdown
-    function toggleDropdown(event, dropdownId) {
-      event.preventDefault(); // Evita que el enlace navegue a otra página
-      const dropdown = document.getElementById(dropdownId);
-      const allDropdowns = document.querySelectorAll('[id$="Dropdown"]');
-
-      // Cierra todos los dropdowns abiertos antes de abrir el actual
-      allDropdowns.forEach((el) => {
-        if (el !== dropdown) el.classList.add('hidden');
+          // Actualiza el contenido del sidebar con las carreras
+          $('#sidebar-content').html(sidebarContent);
+        },
+        error: function() {
+          alert('Hubo un problema al obtener las carreras.');
+        }
       });
+    });
+  });
+</script>
 
-      // Alterna la visibilidad del dropdown actual
-      dropdown.classList.toggle('hidden');
-    }
 
-    // Cierra el dropdown si se hace clic fuera de él
-    window.onclick = function(event) {
-      if (!event.target.matches('a')) {
-        const allDropdowns = document.querySelectorAll('[id$="Dropdown"]');
-        allDropdowns.forEach((el) => {
-          el.classList.add('hidden');
-        });
-      }
-    };
-  
-  function toggleDropdown(event, dropdownID) {
-    event.preventDefault();
-    const dropdown = document.getElementById(dropdownID);
-    dropdown.classList.toggle('hidden'); // Alterna la clase 'hidden' para mostrar/ocultar el dropdown
-}
-
-  </script>
 
 </body>
 </html>

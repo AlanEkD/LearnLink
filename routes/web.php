@@ -11,6 +11,8 @@ use App\Http\Controllers\TipoController;
 use App\Http\Controllers\Material_materiaController;
 use App\Http\Controllers\VideoController;
 use App\Http\Controllers\PdfController;
+use App\Http\Controllers\NavBar;
+use App\Http\Controllers\SemestreCarreraController;
 
 
 
@@ -48,6 +50,9 @@ Route::get('/IMTC', function () {
 
 Route::get('/video/{filename}', [VideoController::class, 'show'])->name('video.show');
 Route::get('/pdfs/{filename}', [PdfController::class, 'show'])->name('pdf.show');
+Route::post('/get-carreras', [NavBar::class, 'getCarrerasByFacultad'])->name('get.carreras');
 
+Route::get('/semestres', [SemestreCarreraController::class, 'index'])->name('semestres.index');
+Route::post('/semestres/asignar', [SemestreCarreraController::class, 'asignarMaterias'])->name('semestres.asignar');
 
 require __DIR__.'/auth.php';
