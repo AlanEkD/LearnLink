@@ -10,6 +10,16 @@ use App\Models\Semestres;
 
 class SemestreCarreraController extends Controller
 {
+    public function publicIndex()
+    {
+        // Obtener todos los semestres y materias disponibles
+        $semestres = Semestres::all(); // Esto puede que necesites ajustar según tu estructura
+        $materias = Materias::all();
+        $carreras = Carreras::all(); // Obtener todas las carreras
+        $semestreCarreras = SemestreCarrera::with(['carrera', 'semestre', 'materia1', 'materia2', 'materia3', 'materia4', 'materia5', 'materia6', 'materia7', 'materia8', 'materia9', 'materia10'])->get();
+        return view('Carreras.algo', compact('semestres', 'materias', 'carreras','semestreCarreras'));
+    }
+
     public function index()
     {
         // Obtener todos los semestres y materias disponibles

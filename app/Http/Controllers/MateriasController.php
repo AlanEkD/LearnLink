@@ -6,13 +6,26 @@ use Illuminate\Http\Request;
 use App\Models\Materias;
 use App\Models\Carreras;
 use App\Models\Tipo_materia;
+use App\Models\Facultades;
+use App\Models\SemestreCarrera;
+
 
 
 class MateriasController extends Controller
 {
+    public function publicIndex()
+{
+    $i = 1;
+    $facultades = Facultades::all();
+    $materias = Materias::all();
+    $carreras = Carreras::all();
+    $tiposMaterias = Tipo_materia::all();
+    return view('Facultades.indexRed', compact('facultades','materias','carreras', 'tiposMaterias', 'i'));
+}
    public function index()
    {    
         $i = 1;
+        
        $materias = Materias::all();
        $carreras = Carreras::all();
        $tiposMaterias = Tipo_materia::all();

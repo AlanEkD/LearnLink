@@ -13,6 +13,7 @@ use App\Http\Controllers\VideoController;
 use App\Http\Controllers\PdfController;
 use App\Http\Controllers\NavBar;
 use App\Http\Controllers\SemestreCarreraController;
+use App\Http\Controllers\RedMateriasController;
 
 
 
@@ -43,16 +44,32 @@ Route::get('/materiales', [Material_materiaController::class, 'publicIndex'])->n
 Route::get('/homepage', function () {
     return view('admin.home');
 })->name('homepage');
+
 Route::get('/IMTC', function () {
     return view('carreras.IMTC');
 })->name('IMTC');
+
+Route::get('/algo', function () {
+    return view('Carreras.algo');
+})->name('algo');
+
+Route::get('/IMTCc', function () {
+    return view('Facultades.indexRed');
+})->name('IMTCc');
+
 
 
 Route::get('/video/{filename}', [VideoController::class, 'show'])->name('video.show');
 Route::get('/pdfs/{filename}', [PdfController::class, 'show'])->name('pdf.show');
 Route::post('/get-carreras', [NavBar::class, 'getCarrerasByFacultad'])->name('get.carreras');
 
-Route::get('/semestres', [SemestreCarreraController::class, 'index'])->name('semestres.index');
+Route::get('/semestres', [SemestreCarreraController::class, 'index'], )->name('semestres.index');
 Route::post('/semestres/asignar', [SemestreCarreraController::class, 'asignarMaterias'])->name('semestres.asignar');
+
+Route::get('/facultades/carrera/{id}', [RedMateriasController::class, 'show'])->name('Facultades.indexRed');
+Route::get('/ruta/{id}', [CarrerasController::class, 'publicindex'])->name('Facultades.indexRed');
+
+
+
 
 require __DIR__.'/auth.php';

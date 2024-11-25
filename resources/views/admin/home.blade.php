@@ -72,6 +72,9 @@
                 <a href="/tipo_materias" class="bg-gradient-to-br from-indigo-500 to-purple-500 text-white py-10 px-6 rounded-lg text-center shadow-xl hover:from-indigo-600 hover:to-purple-600 transform hover:-translate-y-2 transition">
                     <i class="fas fa-cubes mr-2"></i> Editar Tipos de Materias
                 </a>
+                <a href="/semestres" class="bg-gradient-to-br from-indigo-500 to-purple-500 text-white py-10 px-6 rounded-lg text-center shadow-xl hover:from-indigo-600 hover:to-purple-600 transform hover:-translate-y-2 transition">
+                    <i class="fas fa-cubes mr-2"></i> Editar Semestre_Carrera
+                </a>
             </div>
         </div>
     </main>

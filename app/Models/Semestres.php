@@ -20,6 +20,10 @@ class Semestres extends Model
         return $this->belongsToMany(Carreras::class, 'carrera_semestre');
     }
 
+    public function carrera()
+    {
+        return $this->belongsTo(Carreras::class);
+    }
     
 
 }

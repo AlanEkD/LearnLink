@@ -25,8 +25,10 @@ class Carreras extends Model
     {
         return $this->hasMany(Materias::class);
     }
-
-
     
+    public function semestres()
+    {
+        return $this->hasMany(Semestres::class, 'carrera_id'); 
+    }
     
 }

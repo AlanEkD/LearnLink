@@ -6,7 +6,7 @@
   
   <!-- TailwindCSS -->
   @vite('resources/css/app.css')
-  <script src="https://cdn.tailwindcss.com"></script>
+ 
   <link rel="icon" href="{{ asset('img/LOGO.png') }}" >
   <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
@@ -60,46 +60,54 @@
     </div>
   </div>
 
-<script>
-  function toggleDropdown(event, dropdownId) {
-    const dropdown = document.getElementById(dropdownId);
-    dropdown.classList.toggle('hidden');
-  }
-
-  $(document).ready(function() {
-    $('.facultad-button').on('click', function() {
-      const facultadId = $(this).data('id');
-
-      $.ajax({
-        url: '{{ route("get.carreras") }}',  // Ruta a tu controlador
-        method: 'POST',
-        data: {
-          id: facultadId,
-          _token: '{{ csrf_token() }}'
-        },
-        success: function(response) {
-          let carrerasContent = '<h2 class="text-lg font-semibold">Carreras</h2>';
-          
-          if (response.length > 0) {
-            carrerasContent += '<ul class="list-disc pl-5">';
-            response.forEach(function(carrera) {
-              carrerasContent += '<li>' + carrera.nombre + '</li>';
-            });
-            carrerasContent += '</ul>';
-          } else {
-            carrerasContent += '<p>No hay carreras disponibles para esta facultad.</p>';
+  <script>
+    function toggleDropdown(event, dropdownId) {
+      const dropdown = document.getElementById(dropdownId);
+      dropdown.classList.toggle('hidden');
+    }
+  
+    $(document).ready(function() {
+      $('.facultad-button').on('click', function() {
+        const facultadId = $(this).data('id');
+  
+        $.ajax({
+          url: '{{ route("get.carreras") }}', // Ruta a tu controlador
+          method: 'POST',
+          data: {
+            id: facultadId,
+            _token: '{{ csrf_token() }}'
+          },
+          success: function(response) {
+            let carrerasContent = '<h2 class="text-lg font-semibold">Carreras</h2>';
+            
+            if (response.length > 0) {
+              carrerasContent += '<ul class="list-disc pl-5">';
+              response.forEach(function(carreras) {
+                // Genera un enlace para cada carrera
+                carrerasContent += `
+                  <li>
+                    <a href="/ruta/${carreras.id}" class="text-blue-500 hover:underline">
+                      ${carreras.nombre}
+                    </a>
+                  </li>`;
+              });
+              carrerasContent += '</ul>';
+            } else {
+              carrerasContent += '<p>No hay carreras disponibles para esta facultad.</p>';
+            }
+  
+            // Actualiza el contenedor de carreras
+            $('#carreras-container').html(carrerasContent);
+          },
+          error: function(xhr, status, error) {
+            console.error(`Error: ${status} - ${error}`);
+            alert('Hubo un problema al obtener las carreras.');
           }
-
-          // Actualiza el contenedor de carreras
-          $('#carreras-container').html(carrerasContent);
-        },
-        error: function() {
-          alert('Hubo un problema al obtener las carreras.');
-        }
+        });
       });
     });
-  });
-</script>
+  </script>
+  
 
   <!-- Dropdown for Cursos -->
   <div class="relative">
@@ -167,7 +175,7 @@
         <img class="h-48 w-48 rounded-full shadow-xl bg-gradient-to-br from-green-500 to-purple-500" src="{{ asset('img/LOGO.png') }}" alt="Logo">
       </div>
       <h1 class="text-4xl font-bold mt-8 text-indigo-700 text-center">Juntos seremos más inteligentes</h1>
-      <p class="mt-4 text-lg text-indigo-600 text-center">Explora los recursos educativos y selecciona una ingeniería.</p>
+      <p class="mt-4 text-lg text-indigo-600 text-center">Explora los recursos educativos o selecciona una carrera.</p>
 
      <!-- Search Box (hidden after selecting an engineering) -->
         <div id="initialSearch" class="mt-8 w-full flex justify-center">
@@ -188,87 +196,98 @@
       <div class="mt-12 w-full max-w-5xl px-4">
         <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
           <!-- Button 1 -->
-          <a href="#" class="bg-gradient-to-br from-indigo-500 to-purple-500 text-white py-8 px-6 rounded-lg text-center shadow-md hover:shadow-lg hover:scale-105 transform transition duration-300">
-            Ciencias Basicas
+          <a href="https://www.uanl.mx" class="bg-gradient-to-br from-indigo-500 to-purple-500 text-white py-8 px-6 rounded-lg text-center shadow-md hover:shadow-lg hover:scale-105 transform transition duration-300">
+            Conoce nuestra universidad
           </a>
           <!-- Button 2 -->
-          <a href="#" class="bg-gradient-to-br from-indigo-500 to-purple-500 text-white py-8 px-6 rounded-lg text-center shadow-md hover:shadow-lg hover:scale-105 transform transition duration-300">
-            Ciencias de la Ingenieria
+          <a href="https://www.uanl.mx/eventos/" class="bg-gradient-to-br from-indigo-500 to-purple-500 text-white py-8 px-6 rounded-lg text-center shadow-md hover:shadow-lg hover:scale-105 transform transition duration-300">
+            Eventos
           </a>
           <!-- Button 3 -->
-          <a href="#" class="bg-gradient-to-br from-indigo-500 to-purple-500 text-white py-8 px-6 rounded-lg text-center shadow-md hover:shadow-lg hover:scale-105 transform transition duration-300">
-            Optativas
+          <a href="https://cienciauanl.uanl.mx" class="bg-gradient-to-br from-indigo-500 to-purple-500 text-white py-8 px-6 rounded-lg text-center shadow-md hover:shadow-lg hover:scale-105 transform transition duration-300">
+            Ciencia UANL
           </a>
           <!-- Button 4 -->
-          <a href="#" class="bg-gradient-to-br from-indigo-500 to-purple-500 text-white py-8 px-6 rounded-lg text-center shadow-md hover:shadow-lg hover:scale-105 transform transition duration-300">
-          Libre Elección
+          <a href="https://recursos.db.uanl.mx" class="bg-gradient-to-br from-indigo-500 to-purple-500 text-white py-8 px-6 rounded-lg text-center shadow-md hover:shadow-lg hover:scale-105 transform transition duration-300">
+          Biblioteca Digital UANL
           </a>
-          <!-- Button 5 -->
-          <a href="#" class="bg-gradient-to-br from-indigo-500 to-purple-500 text-white py-8 px-6 rounded-lg text-center shadow-md hover:shadow-lg hover:scale-105 transform transition duration-300 items-center justify-center">
-            Formación Profesional
-            </a>
+         
         </div>
       </div>
     </main>
   </div>
 
  <!-- Footer -->
-<footer class="bg-gray-900 text-gray-400 py-6">
+ <footer class="bg-gray-900 text-gray-400 py-6">
   <div class="container mx-auto">
       <div class="grid grid-cols-5 gap-8 text-sm">
-          <!-- Primera columna -->
+          <!-- Primera columna: Información de contacto -->
           <div>
-              <h3 class="text-white mb-4">Escolar</h3>
+              <h3 class="text-white mb-4">Contáctanos</h3>
               <ul class="space-y-2">
-                  <li><a href="" class="hover:text-white transition duration-300"><i class="fas fa-envelope mr-2"></i> Teams Codigo 1 - v4adp7a</a></li>
-                  <li><a href="" class="hover:text-white transition duration-300"><i class="fas fa-envelope mr-2"></i> Teams Codigo 2 - 1h94phz</a></li>
-                  <li><a href="" class="hover:text-white transition duration-300"><i class="fas fa-envelope mr-2"></i> Teams Codigo 2 - zk7olu5</a></li>
-                  <li><a href="" class="hover:text-white transition duration-300"><i class="fas fa-phone mr-2"></i>Numero de Telefono: 8113404423</a></li>
+                  <li><i class="fas fa-envelope mr-2"></i> correo@learnlink.com</li>
+                  <li><i class="fas fa-phone mr-2"></i> +52 81 1234 5678</li>
+                  <li><i class="fas fa-map-marker-alt mr-2"></i> Monterrey, Nuevo León, México</li>
               </ul>
           </div>
 
-          <!-- Segunda columna -->
+          <!-- Segunda columna: Redes Sociales -->
           <div>
-              <h3 class="text-white mb-4">Redes Sociales</h3>
-              <ul class="space-y-2">
-                  <li><a href="https://www.facebook.com/groups/134493809953990" target="_blank" class="hover:text-white transition duration-300"><i class="fab fa-facebook mr-2"></i> Facebook - FIME</a></li>
-                  <li><a href="https://www.instagram.com/fime.oficial?igsh=MTE2OGNteDM0ZTcyOQ==" target="_blank" class="hover:text-white transition duration-300"><i class="fab fa-facebook mr-2"></i> Instagram - fime.oficial</a></li>
-              </ul>
+              <h3 class="text-white mb-4">Síguenos</h3>
+              <div class="flex space-x-4">
+                <ul>
+                  <li>
+                    <a href="https://www.facebook.com/groups/134493809953990" target="_blank" class="hover:text-white transition duration-300">
+                      <i class="fab fa-facebook-square text-2xl">facebook</i>
+                  </a>
+                  </li>
+                  <li>
+                    <a href="https://www.instagram.com/fime.oficial?igsh=MTE2OGNteDM0ZTcyOQ==" target="_blank" class="hover:text-white transition duration-300">
+                      <i class="fab fa-instagram text-2xl">instagram</i>
+                  </a>
+                  </li>
+                </ul>
+              </div>
           </div>
 
-          <!-- Tercera columna -->
+          <!-- Tercera columna: Enlaces útiles -->
           <div>
               <h3 class="text-white mb-4">Enlaces útiles</h3>
               <ul class="space-y-2">
-                  <li><a href="https://www.universidad.com/contacto" target="_blank" class="hover:text-white transition duration-300"><i class="fas fa-globe mr-2"></i> Contacto en el sitio web</a></li>
-                  <li><a href="https://www.fime.uanl.mx/aspirantes/" target="_blank" class="hover:text-white transition duration-300"><i class="fas fa-graduation-cap mr-2"></i> Admisiones</a></li>
+                  <li><a href="https://www.fime.uanl.mx" target="_blank" class="hover:text-white transition duration-300"><i class="fas fa-globe mr-2"></i> Portal FIME</a></li>
+                  <li><a href="https://www.uanl.mx" target="_blank" class="hover:text-white transition duration-300"><i class="fas fa-graduation-cap mr-2"></i> UANL</a></li>
+                  <li><a href="https://www.conricyt.mx/" target="_blank" class="hover:text-white transition duration-300"><i class="fas fa-book mr-2"></i> Biblioteca Digital</a></li>
               </ul>
           </div>
 
-          <!-- Cuarta columna -->
+          <!-- Cuarta columna: Suscripción al boletín -->
           <div>
-              <h3 class="text-white mb-4">Carreras</h3>
-              <ul class="space-y-2">
-                  <li><a href="#" class="hover:text-white transition duration-300">Ingeniería Mecatrónica</a></li>
-                  <li><a href="#" class="hover:text-white transition duration-300">Ingeniería Biomédica</a></li>
-                  <li><a href="#" class="hover:text-white transition duration-300">Ingeniería Aeronáutica</a></li>
-                  <li><a href="#" class="hover:text-white transition duration-300">Ingeniería Biomédica</a></li>
-                  <li><a href="#" class="hover:text-white transition duration-300">Ingeniería Mecánica y Eléctrica</a></li>
-                  <li><a href="#" class="hover:text-white transition duration-300">Ingeniería en Software</a></li>
-              </ul>
+              <h3 class="text-white mb-4">Suscríbete al boletín</h3>
+              <form action="/subscribe" method="POST" class="flex flex-col space-y-2">
+                  <input type="email" name="email" placeholder="Tu correo electrónico" class="p-2 rounded-lg text-gray-800">
+                  <button type="submit" class="bg-indigo-500 hover:bg-indigo-600 text-white py-2 rounded-lg">
+                      Suscribirse
+                  </button>
+              </form>
           </div>
 
-          <!-- Quinta columna -->
+          <!-- Quinta columna: Derechos reservados -->
           <div>
               <h3 class="text-white mb-4">Soporte</h3>
               <ul class="space-y-2">
-                  <li><a href="" class="hover:text-white transition duration-300"><i class="fas fa-envelope mr-2">sadasda!</i> s</a></li>
-                  <li><a href="" class="hover:text-white transition duration-300"><i class="fas fa-phone mr-2"></i> 5334</a></li>
+                  <li><a href="/privacidad" class="hover:text-white transition duration-300"><i class="fas fa-lock mr-2"></i> Política de privacidad</a></li>
+                  <li><a href="/terminos" class="hover:text-white transition duration-300"><i class="fas fa-file-alt mr-2"></i> Términos de uso</a></li>
               </ul>
           </div>
       </div>
+
+      <!-- Línea separadora y derechos reservados -->
+      <div class="border-t border-gray-700 mt-6 pt-4 text-center text-gray-500 text-xs">
+          © 2024 LearnLink. Todos los derechos reservados.
+      </div>
   </div>
 </footer>
+
 
 
   <!-- FontAwesome Icons CDN -->
@@ -300,7 +319,8 @@
           if (response.carreras.length > 0) {
             sidebarContent += '<ul class="list-disc pl-5">';
             response.carreras.forEach(function(carrera) {
-              sidebarContent += '<li>' + carrera.nombre + '</li>';
+
+              sidebarContent += '<li><a href="/ruta/' + carrera.id + '">' + carrera.nombre + '</a></li>';
             });
             sidebarContent += '</ul>';
           } else {

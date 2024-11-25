@@ -4,6 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Models\Carreras;
 use App\Models\Facultades;
+use App\Models\Semestres;
+use App\Models\Materias;
+use App\Models\Tipo_materia;
+use App\Models\SemestreCarrera;
+use App\Models\Material_materia;
+use App\Models\Tipo;
 
 use Illuminate\Http\Request;
 
@@ -12,6 +18,35 @@ class CarrerasController extends Controller
     /**
      * Display a listing of the resource.
      */
+    public function publicIndex($id)
+{
+    $i = 1;
+    $facultades = Facultades::all(); // Todas las facultades
+    $materias = Materias::all(); // Todas las materias
+    $carreras = Carreras::findOrFail($id); // Obtener la carrera específica por ID
+    $tiposMaterias = Tipo_materia::all(); // Tipos de materias
+    $semestres = Semestres::all(); // Todos los semestres
+    $semestreCarreras = SemestreCarrera::with([
+        'carrera', 'semestre', 
+        'materia1', 'materia2', 'materia3', 
+        'materia4', 'materia5', 'materia6', 
+        'materia7', 'materia8', 'materia9', 'materia10'
+    ])->where('carrera_id', $id)->get(); // Filtrar por carrera seleccionada
+    $materiales = Material_materia::all(); // Todos los materiales relacionados con materias
+    
+    return view('Facultades.indexRed', compact(
+        'facultades', 'materias', 'carreras', 
+        'semestres', 'tiposMaterias', 'semestreCarreras', 'materiales', 'i'
+    ));
+}
+
+
+    
+
+
+
+
+
     public function index()
     {   
         $i = 1;
@@ -55,10 +90,23 @@ class CarrerasController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Carreras $carreras)
-    {
-        //
-    }
+    public function show($id)
+{
+    $carreras = Carreras::findOrFail($id); // Obtener la carrera por ID
+    $semestreCarreras = SemestreCarrera::with([
+        'semestre', 
+        'materia1', 'materia2', 'materia3',
+        'materia4', 'materia5', 'materia6',
+        'materia7', 'materia8', 'materia9', 'materia10'
+    ])->where('carrera_id', $id)->get();
+
+    $semestreCarrera = $semestreCarreras->first(); // Obtener el primer semestre, si existe
+
+    return view('Facultades.indexRed', compact('carreras', 'semestreCarreras', 'semestreCarrera'));
+}
+
+
+
 
     /**
      * Show the form for editing the specified resource.
